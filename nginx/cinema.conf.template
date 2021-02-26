@@ -1,0 +1,19 @@
+  server {
+    listen       80 default_server;
+    listen       [::]:80 default_server;
+    server_name  _;
+
+    root /usr/share/nginx/html;
+    
+    location @backend {
+        proxy_pass http://${DJANGO_SERVICE_NAME}:${DJANGO_PORT};
+    }
+    
+    location /admin {
+        proxy_pass http://${DJANGO_SERVICE_NAME}:${DJANGO_PORT};
+    }
+
+    location / {
+        try_files $uri $uri/ @backend;
+    }
+} 

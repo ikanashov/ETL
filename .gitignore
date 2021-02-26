@@ -1,3 +1,8 @@
+# Ignore vscode dir
+.vscode/
+#elastic db production
+elastic/production
+
 #redis db production
 redis/production
 

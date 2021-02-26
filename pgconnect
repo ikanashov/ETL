@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Забираем переменные настройки postgreSQL для поключения 
+source .env
+
+POSTGRES_URI="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}"
+
+#Подключаемся к базе данных устанавливем схемы
+sudo docker-compose exec postgrescinema psql $POSTGRES_URI?options=-c%20search_path%3D${POSTGRES_SCHEMA}
+
+
+

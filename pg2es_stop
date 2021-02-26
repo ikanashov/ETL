@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Подключаемся к контейнеру и останавливаем ETL процесс
+sudo docker-compose exec pg2escinema python stop.py
+
+
+

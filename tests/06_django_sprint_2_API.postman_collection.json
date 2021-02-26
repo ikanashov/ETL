@@ -1,0 +1,507 @@
+{
+	"info": {
+		"_postman_id": "a4d904e6-3a0e-4cd3-b689-ea5a8e3350cf",
+		"name": "movies django API (sprint 2)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "movies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6a9e5d9c-ba8e-4969-80f5-a8ccbbbb0af6",
+						"exec": [
+							"pm.test(\"Запрос первой страницы\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"     var jsonData = pm.response.json();",
+							"     var count = jsonData.count",
+							"     pm.expect(Math.round(count/50)).to.eql(jsonData.total_pages);",
+							"     pm.expect(jsonData.prev).to.eql(null);",
+							"     pm.expect(jsonData.next).to.eql(2);",
+							"     postman.setEnvironmentVariable(\"movieUuid\", jsonData.results[0].id);",
+							"});",
+							"var Ajv = require('ajv'),",
+							"    ajv = new Ajv({ logger: console, allErrors: true }),",
+							"    schema = {",
+							"    \"type\": \"object\",",
+							"    \"required\":[",
+							"        \"count\",",
+							"        \"total_pages\",",
+							"        \"prev\",",
+							"        \"next\",",
+							"        \"results\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"count\": {\"type\": \"integer\"},",
+							"        \"total_pages\": {\"type\": \"integer\"},",
+							"        \"prev\": {\"type\": \"null\"},",
+							"        \"next\": {\"type\": \"integer\"},",
+							"        \"results\": {\"type\": \"array\",",
+							"            \"items\": {\"type\": \"object\",",
+							"                     \"required\":[",
+							"                        \"id\",",
+							"                        \"title\",",
+							"                        \"description\",",
+							"                        \"creation_date\",",
+							"                        \"rating\",",
+							"                        \"type\",",
+							"                        \"genres\",",
+							"                        \"actors\",",
+							"                        \"directors\",",
+							"                        \"writers\",",
+							"                     ],",
+							"                     \"properties\": {",
+							"                        \"id\": {\"type\": \"string\", \"format\": \"uuid\"},",
+							"                        \"title\": {\"type\": \"string\"},",
+							"                        \"description\": {\"type\": [\"string\", \"null\"]},",
+							"                        \"creation_date\": {\"type\": [\"string\", \"null\"]},",
+							"                        \"rating\": {\"type\": \"number\"},",
+							"                        \"type\": {\"type\": \"string\"},",
+							"                        \"genres\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"actors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"directors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"writers\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                     }",
+							"            }",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.test('Проверка схемы', function () {",
+							"    pm.expect(ajv.validate(schema, pm.response.json()), JSON.stringify(ajv.errors)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/movies",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies?page=2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a1eb14a-86a8-43a2-956b-8f123b38473d",
+						"exec": [
+							"pm.test(\"Запрос второй страницы\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"     var jsonData = pm.response.json();",
+							"     var count = jsonData.count",
+							"     pm.expect(Math.round(count/50)).to.eql(jsonData.total_pages);",
+							"     pm.expect(jsonData.prev).to.eql(1);",
+							"     pm.expect(jsonData.next).to.eql(3);",
+							"});",
+							"var Ajv = require('ajv'),",
+							"    ajv = new Ajv({ logger: console, allErrors: true }),",
+							"    schema = {",
+							"    \"type\": \"object\",",
+							"    \"required\":[",
+							"        \"count\",",
+							"        \"total_pages\",",
+							"        \"prev\",",
+							"        \"next\",",
+							"        \"results\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"count\": {\"type\": \"integer\"},",
+							"        \"total_pages\": {\"type\": \"integer\"},",
+							"        \"prev\": {\"type\": \"integer\"},",
+							"        \"next\": {\"type\": \"integer\"},",
+							"        \"results\": {\"type\": \"array\",",
+							"            \"items\": {\"type\": \"object\",",
+							"                     \"required\":[",
+							"                        \"id\",",
+							"                        \"title\",",
+							"                        \"description\",",
+							"                        \"creation_date\",",
+							"                        \"rating\",",
+							"                        \"type\",",
+							"                        \"genres\",",
+							"                        \"actors\",",
+							"                        \"directors\",",
+							"                        \"writers\",",
+							"                     ],",
+							"                     \"properties\": {",
+							"                        \"id\": {\"type\": \"string\", \"format\": \"uuid\"},",
+							"                        \"title\": {\"type\": \"string\"},",
+							"                        \"description\": {\"type\": [\"string\", \"null\"]},",
+							"                        \"creation_date\": {\"type\": [\"string\", \"null\"]},",
+							"                        \"rating\": {\"type\": \"number\"},",
+							"                        \"type\": {\"type\": \"string\"},",
+							"                        \"genres\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"actors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"directors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"writers\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                     }",
+							"            }",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.test('Проверка схемы', function () {",
+							"    pm.expect(ajv.validate(schema, pm.response.json()), JSON.stringify(ajv.errors)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/movies?page=2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"movies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies?page=last",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b8f3b280-810e-4924-a544-3557b8e420e8",
+						"exec": [
+							"pm.test(\"Запрос последней страницы\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"     var jsonData = pm.response.json(),",
+							"         count = jsonData.count,",
+							"         pagesCount = Math.round(count/50);",
+							"     pm.expect(pagesCount).to.eql(jsonData.total_pages);",
+							"     pm.expect(jsonData.prev).to.eql(pagesCount-1);",
+							"     pm.expect(jsonData.next).to.eql(null);",
+							"});",
+							"var Ajv = require('ajv'),",
+							"    ajv = new Ajv({ logger: console, allErrors: true }),",
+							"    schema = {",
+							"    \"type\": \"object\",",
+							"    \"required\":[",
+							"        \"count\",",
+							"        \"total_pages\",",
+							"        \"prev\",",
+							"        \"next\",",
+							"        \"results\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"count\": {\"type\": \"integer\"},",
+							"        \"total_pages\": {\"type\": \"integer\"},",
+							"        \"prev\": {\"type\": \"integer\"},",
+							"        \"next\": {\"type\": \"null\"},",
+							"        \"results\": {\"type\": \"array\",",
+							"            \"items\": {\"type\": \"object\",",
+							"                     \"required\":[",
+							"                        \"id\",",
+							"                        \"title\",",
+							"                        \"description\",",
+							"                        \"creation_date\",",
+							"                        \"rating\",",
+							"                        \"type\",",
+							"                        \"genres\",",
+							"                        \"actors\",",
+							"                        \"directors\",",
+							"                        \"writers\",",
+							"                     ],",
+							"                     \"properties\": {",
+							"                        \"id\": {\"type\": \"string\", \"format\": \"uuid\"},",
+							"                        \"title\": {\"type\": \"string\"},",
+							"                        \"description\": {\"type\": [\"string\", \"null\"]},",
+							"                        \"creation_date\": {\"type\": [\"string\", \"null\"]},",
+							"                        \"rating\": {\"type\": \"number\"},",
+							"                        \"type\": {\"type\": \"string\"},",
+							"                        \"genres\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"actors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"directors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                        \"writers\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"                     }",
+							"            }",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.test('Проверка схемы', function () {",
+							"    pm.expect(ajv.validate(schema, pm.response.json()), JSON.stringify(ajv.errors)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/movies?page=last",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"movies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "last"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies/uuid/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cbbed734-161b-4acc-8aae-c3c1e6c0de54",
+						"exec": [
+							"pm.test(\"Запрос фильма по UUID с полными данными\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"var Ajv = require('ajv'),",
+							"    ajv = new Ajv({ logger: console, allErrors: true }),",
+							"    schema = {",
+							"        \"type\": \"object\",",
+							"        \"required\":[",
+							"            \"id\",",
+							"            \"title\",",
+							"            \"description\",",
+							"            \"creation_date\",",
+							"            \"rating\",",
+							"            \"type\",",
+							"            \"genres\",",
+							"            \"actors\",",
+							"            \"directors\",",
+							"            \"writers\",",
+							"        ],",
+							"        \"properties\": {",
+							"            \"id\": {\"type\": \"string\", \"format\": \"uuid\"},",
+							"            \"title\": {\"type\": \"string\"},",
+							"            \"description\": {\"type\": [\"string\", \"null\"]},",
+							"            \"creation_date\": {\"type\": [\"string\", \"null\"]},",
+							"            \"rating\": {\"type\": \"number\"},",
+							"            \"type\": {\"type\": \"string\"},",
+							"            \"genres\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            \"actors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            \"directors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            \"writers\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            }",
+							"        };",
+							"",
+							"pm.test('Проверка схемы', function () {",
+							"    pm.expect(ajv.validate(schema, pm.response.json()), JSON.stringify(ajv.errors)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/movies/{{movieUuid_all_data}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"movies",
+						"{{movieUuid_all_data}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies/uuid_empty/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7aa07e73-cad5-4426-8325-55949238793e",
+						"exec": [
+							"pm.test(\"Запрос фильма по UUID с неполными данными\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"var Ajv = require('ajv'),",
+							"    ajv = new Ajv({ logger: console, allErrors: true }),",
+							"    schema = {",
+							"        \"type\": \"object\",",
+							"        \"required\":[",
+							"            \"id\",",
+							"            \"title\",",
+							"            \"description\",",
+							"            \"creation_date\",",
+							"            \"rating\",",
+							"            \"type\",",
+							"            \"genres\",",
+							"            \"actors\",",
+							"            \"directors\",",
+							"            \"writers\",",
+							"        ],",
+							"        \"properties\": {",
+							"            \"id\": {\"type\": \"string\", \"format\": \"uuid\"},",
+							"            \"title\": {\"type\": \"string\"},",
+							"            \"description\": {\"type\": [\"string\", \"null\"]},",
+							"            \"creation_date\": {\"type\": [\"string\", \"null\"]},",
+							"            \"rating\": {\"type\": \"number\"},",
+							"            \"type\": {\"type\": \"string\"},",
+							"            \"genres\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            \"actors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            \"directors\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            \"writers\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},",
+							"            }",
+							"        };",
+							"",
+							"pm.test('Проверка схемы', function () {",
+							"    pm.expect(ajv.validate(schema, pm.response.json()), JSON.stringify(ajv.errors)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/movies/{{movieUuid_all_data}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"movies",
+						"{{movieUuid_all_data}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies/wrongUuid/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8ff2f813-036e-468e-9ebc-3236c6213711",
+						"exec": [
+							"pm.test(\"Запрос несуществующей страницы\", function () {",
+							"     pm.response.to.be.notFound;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/movies/0000",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"movies",
+						"0000"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "03e3a5ac-1cb5-4360-a8a8-93f1bb90a214",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "156fd462-66be-4cac-8b7e-b1e0084e3c23",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "8423497b-47b4-479a-b098-f149e95756bd",
+			"key": "base_url",
+			"value": "127.0.0.1:8000"
+		},
+		{
+			"id": "65be7b36-0e09-485f-a570-1ca87465fdf0",
+			"key": "movieUuid_all_data",
+			"value": "00aadbbb-8323-43db-885d-c6638a918832"
+		},
+		{
+			"id": "d413ed88-36c4-4dcb-a13b-8a60c73fd881",
+			"key": "movieUuid_empty_data",
+			"value": "f3f0d139-0a6e-46eb-b973-82530a9e4d4e"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
