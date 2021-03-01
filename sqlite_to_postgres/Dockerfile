@@ -12,7 +12,7 @@ FROM base
 
 COPY --from=builder /install /usr/local
 RUN apk --no-cache add libpq
-COPY db/db.sqlite /etl/db/
-COPY db/get_imdb_data.sh /etl/db/
-COPY *.py /etl/
-WORKDIR /etl
+COPY db/db.sqlite /sqlite_to_pg/db/
+COPY db/get_imdb_data.sh /sqlite_to_pg/db/
+COPY *.py /sqlite_to_pg/
+WORKDIR /sqlite_to_pg

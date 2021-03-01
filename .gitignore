@@ -15,9 +15,9 @@ name.basics.tsv.gz
 title.basics.tsv.gz
 title.episode.tsv.gz
 
-#django etl venv
+#django sqlite_to_postgres venv
 cinema_admin/cinemavenv/
-etl/etlvenv/
+sqlite_to_postgres/etlvenv/
 
 #django static
 cinema_admin/config/static/

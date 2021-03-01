@@ -50,9 +50,9 @@ services:
       - cinema_net
     depends_on:
       - djangocinema
-  etlcinema:
+  sqlite2pgcinema:
     restart: 'no'
-    container_name: cinemaETL
+    container_name: cinemaSqlite2PG
     environment:
       - POSTGRES_DB=$POSTGRES_DB
       - POSTGRES_USER=$POSTGRES_USER
@@ -60,9 +60,9 @@ services:
       - POSTGRES_HOST=postgrescinema
       - POSTGRES_PORT=5432
       - POSTGRES_SCHEMA=$POSTGRES_SCHEMA
-    build: ./etl/
+    build: ./sqlite_to_postgres/
     volumes:
-      - dump-db:/etl/db
+      - dump-db:/sqlite_to_postgres/db
     networks:
       - cinema_net
     depends_on:
