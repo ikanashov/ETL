@@ -10,8 +10,6 @@ services:
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
     volumes:
       - ./db/production:/var/lib/postgresql/data
-    ports:
-      - $POSTGRES_PORT:5432
     networks:
       - cinema_net
   djangocinema:
@@ -88,8 +86,6 @@ services:
       - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
     volumes:
       - ./elastic/production:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
     networks:
       - cinema_net
   pg2escinema:
